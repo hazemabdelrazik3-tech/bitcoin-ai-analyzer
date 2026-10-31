@@ -9,37 +9,37 @@ from datetime import datetime, timezone
 def build_html():
     now_str = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     
-    html_content = f"""<!DOCTYPE html>
+    html_content = """<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>Ultimate Institutional Master Suite & AI Mastermind</title>
     <style>
-        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 20px; margin: 0; }}
-        .container {{ max-width: 1100px; margin: auto; }}
-        h1 {{ color: #f7931a; text-align: center; }}
-        h2 {{ color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 6px; }}
-        .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin: 16px 0; }}
-        .action-box {{ text-align: center; padding: 24px; border-radius: 12px; background: #1f242c; border: 2px solid #58a6ff; }}
-        .action-label {{ font-size: 42px; font-weight: bold; color: #f7931a; }}
-        table {{ width: 100%; border-collapse: collapse; margin-top: 8px; }}
-        th {{ text-align: right; color: #8b949e; border-bottom: 1px solid #30363d; padding: 8px 4px; }}
-        td {{ padding: 8px 4px; border-bottom: 1px solid #21262d; }}
-        .metric {{ display: inline-block; margin: 8px 16px; text-align: center; }}
-        .val {{ font-size: 24px; font-weight: bold; color: #f7931a; transition: color 0.3s ease; }}
-        .lbl {{ font-size: 12px; color: #8b949e; }}
-        .footer {{ text-align: center; color: #8b949e; font-size: 12px; margin-top: 32px; }}
-        .live-dot {{ height: 12px; width: 12px; background-color: #00c853; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }}
-        @keyframes pulse {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.3; }} 100% {{ opacity: 1; }} }}
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 20px; margin: 0; }
+        .container { max-width: 1100px; margin: auto; }
+        h1 { color: #f7931a; text-align: center; }
+        h2 { color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 6px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin: 16px 0; }
+        .action-box { text-align: center; padding: 24px; border-radius: 12px; background: #1f242c; border: 2px solid #58a6ff; }
+        .action-label { font-size: 42px; font-weight: bold; color: #f7931a; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+        th { text-align: right; color: #8b949e; border-bottom: 1px solid #30363d; padding: 8px 4px; }
+        td { padding: 8px 4px; border-bottom: 1px solid #21262d; }
+        .metric { display: inline-block; margin: 8px 16px; text-align: center; }
+        .val { font-size: 24px; font-weight: bold; color: #f7931a; transition: color 0.3s ease; }
+        .lbl { font-size: 12px; color: #8b949e; }
+        .footer { text-align: center; color: #8b949e; font-size: 12px; margin-top: 32px; }
+        .live-dot { height: 12px; width: 12px; background-color: #00c853; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         
-        .chat-container {{ background: #090d12; border: 1px solid #30363d; border-radius: 10px; padding: 15px; margin-top: 15px; }}
-        .chat-box {{ height: 220px; overflow-y: auto; background: #11161d; border: 1px solid #21262d; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 14px; display: flex; flex-direction: column; gap: 8px; }}
-        .msg-ai {{ background: #1f242c; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-start; border-right: 3px solid #f7931a; }}
-        .msg-user {{ background: #238636; color: #fff; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-end; }}
-        .chat-input-area {{ display: flex; gap: 10px; }}
-        .chat-input {{ flex: 1; background: #161b22; border: 1px solid #30363d; color: #e6edf3; padding: 10px; border-radius: 6px; font-size: 14px; }}
-        .chat-btn {{ background: #f7931a; color: #0d1117; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; }}
-        .chat-btn:hover {{ background: #ffa726; }}
+        .chat-container { background: #090d12; border: 1px solid #30363d; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        .chat-box { height: 220px; overflow-y: auto; background: #11161d; border: 1px solid #21262d; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .msg-ai { background: #1f242c; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-start; border-right: 3px solid #f7931a; }
+        .msg-user { background: #238636; color: #fff; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-end; }
+        .chat-input-area { display: flex; gap: 10px; }
+        .chat-input { flex: 1; background: #161b22; border: 1px solid #30363d; color: #e6edf3; padding: 10px; border-radius: 6px; font-size: 14px; }
+        .chat-btn { background: #f7931a; color: #0d1117; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .chat-btn:hover { background: #ffa726; }
     </style>
     
     <script>
@@ -48,26 +48,26 @@ def build_html():
         let fixedEntry = 0, fixedStop = 0, fixedTarget = 0, fixedPivot = 0, fixedR1 = 0, fixedS1 = 0;
         let currentBtcPrice = 77484;
 
-        function connectWebSocket() {{
+        function connectWebSocket() {
             ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
             
-            ws.onmessage = function(event) {{
+            ws.onmessage = function(event) {
                 let data = JSON.parse(event.data);
                 currentBtcPrice = parseFloat(data.p);
                 
                 let priceElement = document.getElementById('btc-price');
                 let oldPrice = parseFloat(priceElement.getAttribute('data-price') || currentBtcPrice);
                 
-                if (currentBtcPrice > oldPrice) {{
+                if (currentBtcPrice > oldPrice) {
                     priceElement.style.color = '#00c853';
-                }} else if (currentBtcPrice < oldPrice) {{
+                } else if (currentBtcPrice < oldPrice) {
                     priceElement.style.color = '#d50000';
-                }}
+                }
                 
-                priceElement.innerText = '$' + currentBtcPrice.toLocaleString('en-US', {{minimumFractionDigits: 2, maximumFractionDigits: 2}});
+                priceElement.innerText = '$' + currentBtcPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 priceElement.setAttribute('data-price', currentBtcPrice);
                 
-                if (!baselineSet) {{
+                if (!baselineSet) {
                     fixedPivot = Math.round(currentBtcPrice * 0.992);
                     fixedR1 = Math.round(currentBtcPrice * 1.015);
                     fixedS1 = Math.round(currentBtcPrice * 0.985);
@@ -83,7 +83,7 @@ def build_html():
                     document.getElementById('plan-target').innerText = '$' + fixedTarget.toLocaleString();
                     
                     baselineSet = true;
-                }}
+                }
                 
                 let action = currentBtcPrice >= fixedPivot ? "BUY (شراء مؤسسي)" : "SELL (بيع تصحيحي)";
                 let actionColor = currentBtcPrice >= fixedPivot ? "#00c853" : "#d50000";
@@ -94,45 +94,45 @@ def build_html():
                 let statusText = "";
                 let statusColor = "#ff9100";
                 
-                if (currentBtcPrice > fixedEntry + 300) {{
+                if (currentBtcPrice > fixedEntry + 300) {
                     statusText = "⏳ أمر معلق (السعر أعلى من منطقة الدخول، بانتظار الهبوط والاختبار عند S1)";
                     statusColor = "#ff9100";
-                }} else if (currentBtcPrice >= fixedEntry - 50 && currentBtcPrice <= fixedEntry + 150) {{
+                } else if (currentBtcPrice >= fixedEntry - 50 && currentBtcPrice <= fixedEntry + 150) {
                     statusText = "🎯 السعر في منطقة الدخول تماماً (فرصة تفعيل قريبة جداً)";
                     statusColor = "#00c853";
-                }} else if (currentBtcPrice < fixedEntry && currentBtcPrice > fixedStop) {{
+                } else if (currentBtcPrice < fixedEntry && currentBtcPrice > fixedStop) {
                     statusText = "🟢 تم تفعيل الصفقة بنجاح وهي تتداول في نطاق الأرباح";
                     statusColor = "#00c853";
-                }} else if (currentBtcPrice <= fixedStop) {{
+                } else if (currentBtcPrice <= fixedStop) {
                     statusText = "🔴 تم ضرب وقف الخسارة (إغلاق الصفقة لحماية رأس المال)";
                     statusColor = "#d50000";
-                }} else {{
+                } else {
                     statusText = "⏳ أمر شراء معلق بانتظار حركة السعر";
                     statusColor = "#ff9100";
-                }}
+                }
                 
                 document.getElementById('trade-execution-status').innerText = statusText;
                 document.getElementById('trade-execution-status').style.color = statusColor;
                 
                 let algoMsg = "حالة الخوارزمية: استقرار في السيولة النطاقية (No Sweep)";
                 let algoColor = "#58a6ff";
-                if (currentBtcPrice > fixedR1 - 50) {{
+                if (currentBtcPrice > fixedR1 - 50) {
                     algoMsg = "🚨 تنبيه خوارزمي: اختبار حد السيولة العلوي (Breakout / Stop Hunt Risk)";
                     algoColor = "#ff9100";
-                }} else if (currentBtcPrice < fixedS1 + 50) {{
+                } else if (currentBtcPrice < fixedS1 + 50) {
                     algoMsg = "⚡ تنبيه خوارزمي: هجوم تجميعي عند الدعم السفلي (Institutional Sweep Zone)";
                     algoColor = "#00c853";
-                }}
+                }
                 document.getElementById('algo-status').innerText = algoMsg;
                 document.getElementById('algo-status').style.color = algoColor;
-            }};
+            };
             
-            ws.onclose = function() {{
+            ws.onclose = function() {
                 setTimeout(connectWebSocket, 3000);
-            }};
-        }}
+            };
+        }
         
-        function sendUserMessage() {{
+        function sendUserMessage() {
             let inputField = document.getElementById('user-input');
             let chatBox = document.getElementById('chat-history');
             let userText = inputField.value.trim();
@@ -143,37 +143,37 @@ def build_html():
             inputField.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
             
-            setTimeout(() => {{
+            setTimeout(() => {
                 let aiReply = generateMastermindReply(userText);
                 chatBox.innerHTML += '<div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> ' + aiReply + '</div>';
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 600);
-        }}
+        }
         
-        function generateMastermindReply(query) {{
+        function generateMastermindReply(query) {
             let q = query.toLowerCase();
-            if (q.includes('السوق') || q.includes('وضع') || q.includes('الحال')) {{
+            if (q.includes('السوق') || q.includes('وضع') || q.includes('الحال')) {
                 return 'بصفتي صانع المنظومة، السعر الحالي للبيتكوين هو $' + currentBtcPrice.toLocaleString() + '. السوق يتحرك حالياً وسط سيولة مؤسسية متوازنة. الإشارة الحالية هي ' + (currentBtcPrice >= fixedPivot ? 'شراء (BUY)' : 'بيع تصحيحي (SELL)') + ' مع التزام تام بمستويات S1 و R1 المعتمدة.';
-            }} else if (q.includes('اخبار') || q.includes('أخبار') || q.includes('تغريدات') || q.includes('كوارث') || q.includes('بيان')) {{
+            } else if (q.includes('اخبار') || q.includes('أخبار') || q.includes('تغريدات') || q.includes('كوارث') || q.includes('بيان')) {
                 return '📰 رادار الأخبار العالمية يرصد: 1) استقرار التضخم والتصريحات الفيدرالية. 2) غياب الصدمات التنظيمية. 3) رصد تمركز حيتان السوق عند مناطق السيولة (Institutional Sweep).';
-            }} else if (q.includes('باك تيست') || q.includes('backtest') || q.includes('أداء') || q.includes('نجاح')) {{
+            } else if (q.includes('باك تيست') || q.includes('backtest') || q.includes('أداء') || q.includes('نجاح')) {
                 return '📊 كصانع هذا النظام، الباك تيست يثبت أن دقة التوقعات (Win Rate) تتراوح بين 68.9% إلى 72.5% بمتوسط عائد للمخاطرة R:R يتخطى 1:2.3.';
-            }} else if (q.includes('صفقة') || q.includes('دخول') || q.includes('هدف') || q.includes('استوب')) {{
+            } else if (q.includes('صفقة') || q.includes('دخول') || q.includes('هدف') || q.includes('استوب')) {
                 return '🎯 خطة تداولك الحية: الدخول عند $' + fixedEntry.toLocaleString() + '، الوقف عند $' + fixedStop.toLocaleString() + '، والهدف عند $' + fixedTarget.toLocaleString() + '.';
-            }} else {{
+            } else {
                 return 'أهلاً بك يا مهندس. أنا الشات الذكي وصانع هذه المنظومة. اسألني في أي وقت عن حالة السوق، الأخبار، أو تفاصيل الباك تيست!';
-            }}
-        }}
+            }
+        }
 
-        window.onload = function() {{
+        window.onload = function() {
             connectWebSocket();
-        }};
+        };
     </script>
 </head>
 <body>
 <div class="container">
     <h1>🤖 منصة تحليل واختراق خوارزميات السوق والتحكم الحي <span class="live-dot"></span></h1>
-    <p style="text-align:center;color:#8b949e">{now_str} · Ultimate Mastermind & AI Suite</p>
+    <p style="text-align:center;color:#8b949e">Ultimate Mastermind & AI Suite</p>
 
     <div class="card action-box">
         <div class="action-label" id="action-direction">جارِ التحليل...</div>
