@@ -30,7 +30,6 @@ def build_html():
         .live-dot {{height: 12px; width: 12px; background-color: #00c853; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;}}
         @keyframes pulse {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.3; }} 100% {{ opacity: 1; }} }}
         
-        /* تصميم شات الذكاء الاصطناعي المدمج */
         .chat-container {{background:#090d12;border:1px solid #30363d;border-radius:10px;padding:15px;margin-top:15px}}
         .chat-box {{height:220px;overflow-y:auto;background:#11161d;border:1px solid #21262d;border-radius:8px;padding:12px;margin-bottom:10px;font-size:14px;display:flex;flex-direction:column;gap:8px}}
         .msg-ai {{background:#1f242c;padding:10px;border-radius:8px;max-width:85%;align-self:flex-start;border-right:3px solid #f7931a}}
@@ -45,7 +44,7 @@ def build_html():
         let ws;
         let baselineSet = false;
         let fixedEntry = 0, fixedStop = 0, fixedTarget = 0, fixedPivot = 0, fixedR1 = 0, fixedS1 = 0;
-        let currentBtcPrice = 77414;
+        let currentBtcPrice = 77364;
 
         function connectWebSocket() {{
             ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
@@ -131,7 +130,6 @@ def build_html():
             }};
         }}
         
-        // ذكاء اصطناعي تفاعلي (مالك المنظومة وصانع الباك تيست)
         function sendUserMessage() {{
             let inputField = document.getElementById('user-input');
             let chatBox = document.getElementById('chat-history');
@@ -139,12 +137,10 @@ def build_html():
             
             if (userText === "") return;
             
-            // إضافة رسالة المستخدم
             chatBox.innerHTML += `<div class="msg-user"><b>أنت:</b> ${{userText}}</div>`;
             inputField.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
             
-            // رد الذكاء الاصطناعي (مالك المنظومة)
             setTimeout(() => {{
                 let aiReply = generateMastermindReply(userText);
                 chatBox.innerHTML += `<div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> ${{aiReply}}</div>`;
@@ -177,14 +173,12 @@ def build_html():
     <h1>🤖 منصة تحليل واختراق خوارزميات السوق والتحكم الحي <span class="live-dot"></span></h1>
     <p style="text-align:center;color:#8b949e">{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} · Ultimate Mastermind & AI Suite</p>
 
-    <!-- التوجيه الاستراتيجي وحالة التنفيذ -->
     <div class="card action-box">
         <div class="action-label" id="action-direction">جارِ التحليل...</div>
         <div id="trade-execution-status" style="font-size:17px;font-weight:bold;margin-top:10px;color:#ff9100">فحص دقيق لحالة الأوامر...</div>
         <div id="algo-status" style="font-size:15px;margin-top:10px;color:#58a6ff;font-weight:bold">منظومة رصد الخوارزميات: نشطة</div>
     </div>
 
-    <!-- غرفة الشات التفاعلي للذكاء الاصطناعي (مالك المنظومة) -->
     <div class="card">
         <h2>💬 مساعد صانع المنظومة وراصد الأخبار العالمية (AI Mastermind Chat)</h2>
         <p style="font-size:13px;color:#8b949e;margin-bottom:10px">اسأل صانع النظام عن حالة السوق، الأخبار، التغريدات، الكوارث الاقتصادية، أو تفاصيل الباك تيست والصفقات:</p>
@@ -199,7 +193,6 @@ def build_html():
         </div>
     </div>
 
-    <!-- تقرير حالة السوق والأخبار والاقتصاد الكلي -->
     <div class="card">
         <h2>📈 تقرير حالة السوق والاقتصاد الكلي (Market Health Report)</h2>
         <table>
@@ -211,9 +204,8 @@ def build_html():
         </table>
     </div>
 
-    <!-- نظرة عامة وسعر حي متحدث -->
     <div class="card">
-        <h2>📊 نظرة عامة والسعر Fوري اللحظي</h2>
+        <h2>📊 نظرة عامة والسعر الفوري اللحظي</h2>
         <div style="display:flex;flex-wrap:wrap;justify-content:space-around">
             <div class="metric"><div class="val" id="btc-price" data-price="0">جارِ الاتصال...</div><div class="lbl">السعر الحي الفوري (Live Ticker)</div></div>
             <div class="metric"><div class="val" style="color:#58a6ff">101.96</div><div class="lbl">مؤشر الدولار (DXY)</div></div>
@@ -221,7 +213,6 @@ def build_html():
         </div>
     </div>
 
-    <!-- خطة التداول بالمستويات الثابتة والدقيقة -->
     <div class="card">
         <h2>🎯 خطة التداول ومستويات التنفيذ الميدانية (ثابتة وغير متذبذبة)</h2>
         <table>
@@ -232,7 +223,6 @@ def build_html():
         </table>
     </div>
 
-    <!-- المستويات الفنية والدعوم والمقاومات الثابتة -->
     <div class="card">
         <h2>📍 مستويات البيفوت والدعوم والمقاومات (Fixed Key Levels)</h2>
         <table>
