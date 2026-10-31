@@ -1,37 +1,44 @@
+"""
+ULTIMATE INSTITUTIONAL MASTER SUITE WITH AI CHAT MASTERMIND & LIVE FEED
+Includes complete live WebSocket ticker, fixed baseline levels, precision order tracker,
+market maker algorithm sweep detection, and an interactive AI Market Owner Assistant.
+"""
+
 from datetime import datetime, timezone
 
 def build_html():
+    now_str = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     return f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <title>Ultimate Institutional Master Suite & AI Mastermind</title>
     <style>
-        body{{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#e6edf3;padding:20px;margin:0}}
-        .container{{max-width:1100px;margin:auto}}
-        h1{{color:#f7931a;text-align:center}}
-        h2{{color:#58a6ff;border-bottom:1px solid #30363d;padding-bottom:6px}}
-        .card{{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:20px;margin:16px 0}}
-        .action-box{{text-align:center;padding:24px;border-radius:12px;background:#1f242c;border:2px solid #58a6ff}}
-        .action-label{{font-size:42px;font-weight:bold;color:#f7931a}}
-        table{{width:100%;border-collapse:collapse;margin-top:8px}}
-        th{{text-align:right;color:#8b949e;border-bottom:1px solid #30363d;padding:8px 4px}}
-        td{{padding:8px 4px;border-bottom:1px solid #21262d}}
-        .metric{{display:inline-block;margin:8px 16px;text-align:center}}
-        .val{{font-size:24px;font-weight:bold;color:#f7931a;transition: color 0.3s ease}}
-        .lbl{{font-size:12px;color:#8b949e}}
-        .footer{{text-align:center;color:#8b949e;font-size:12px;margin-top:32px}}
-        .live-dot {{height: 12px; width: 12px; background-color: #00c853; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite;}}
+        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #0d1117; color: #e6edf3; padding: 20px; margin: 0; }}
+        .container {{ max-width: 1100px; margin: auto; }}
+        h1 {{ color: #f7931a; text-align: center; }}
+        h2 {{ color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 6px; }}
+        .card {{ background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; margin: 16px 0; }}
+        .action-box {{ text-align: center; padding: 24px; border-radius: 12px; background: #1f242c; border: 2px solid #58a6ff; }}
+        .action-label {{ font-size: 42px; font-weight: bold; color: #f7931a; }}
+        table {{ width: 100%; border-collapse: collapse; margin-top: 8px; }}
+        th {{ text-align: right; color: #8b949e; border-bottom: 1px solid #30363d; padding: 8px 4px; }}
+        td {{ padding: 8px 4px; border-bottom: 1px solid #21262d; }}
+        .metric {{ display: inline-block; margin: 8px 16px; text-align: center; }}
+        .val {{ font-size: 24px; font-weight: bold; color: #f7931a; transition: color 0.3s ease; }}
+        .lbl {{ font-size: 12px; color: #8b949e; }}
+        .footer {{ text-align: center; color: #8b949e; font-size: 12px; margin-top: 32px; }}
+        .live-dot {{ height: 12px; width: 12px; background-color: #00c853; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }}
         @keyframes pulse {{ 0% {{ opacity: 1; }} 50% {{ opacity: 0.3; }} 100% {{ opacity: 1; }} }}
         
-        .chat-container {{background:#090d12;border:1px solid #30363d;border-radius:10px;padding:15px;margin-top:15px}}
-        .chat-box {{height:220px;overflow-y:auto;background:#11161d;border:1px solid #21262d;border-radius:8px;padding:12px;margin-bottom:10px;font-size:14px;display:flex;flex-direction:column;gap:8px}}
-        .msg-ai {{background:#1f242c;padding:10px;border-radius:8px;max-width:85%;align-self:flex-start;border-right:3px solid #f7931a}}
-        .msg-user {{background:#238636;color:#fff;padding:10px;border-radius:8px;max-width:85%;align-self:flex-end}}
-        .chat-input-area {{display:flex;gap:10px}}
-        .chat-input {{flex:1;background:#161b22;border:1px solid #30363d;color:#e6edf3;padding:10px;border-radius:6px;font-size:14px}}
-        .chat-btn {{background:#f7931a;color:#0d1117;border:none;padding:10px 20px;font-weight:bold;border-radius:6px;cursor:pointer}}
-        .chat-btn:hover {{background:#ffa726}}
+        .chat-container {{ background: #090d12; border: 1px solid #30363d; border-radius: 10px; padding: 15px; margin-top: 15px; }}
+        .chat-box {{ height: 220px; overflow-y: auto; background: #11161d; border: 1px solid #21262d; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 14px; display: flex; flex-direction: column; gap: 8px; }}
+        .msg-ai {{ background: #1f242c; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-start; border-right: 3px solid #f7931a; }}
+        .msg-user {{ background: #238636; color: #fff; padding: 10px; border-radius: 8px; max-width: 85%; align-self: flex-end; }}
+        .chat-input-area {{ display: flex; gap: 10px; }}
+        .chat-input {{ flex: 1; background: #161b22; border: 1px solid #30363d; color: #e6edf3; padding: 10px; border-radius: 6px; font-size: 14px; }}
+        .chat-btn {{ background: #f7931a; color: #0d1117; border: none; padding: 10px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; }}
+        .chat-btn:hover {{ background: #ffa726; }}
     </style>
     
     <script>
@@ -131,13 +138,13 @@ def build_html():
             
             if (userText === "") return;
             
-            chatBox.innerHTML += `<div class="msg-user"><b>أنت:</b> ${{userText}}</div>`;
+            chatBox.innerHTML += '<div class="msg-user"><b>أنت:</b> ' + userText + '</div>';
             inputField.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
             
             setTimeout(() => {{
                 let aiReply = generateMastermindReply(userText);
-                chatBox.innerHTML += `<div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> ${{aiReply}}</div>`;
+                chatBox.innerHTML += '<div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> ' + aiReply + '</div>';
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 600);
         }}
@@ -145,15 +152,15 @@ def build_html():
         function generateMastermindReply(query) {{
             let q = query.toLowerCase();
             if (q.includes('السوق') || q.includes('وضع') || q.includes('الحال')) {{
-                return `بصفتي صانع المنظومة، السعر الحالي للبيتكوين هو $${{currentBtcPrice.toLocaleString()}}. السوق يتحرك حالياً وسط سيولة مؤسسية متوازنة. الإشارة الحالية هي ${{currentBtcPrice >= fixedPivot ? 'شراء (BUY)' : 'بيع تصحيحي (SELL)'}} مع التزام تام بمستويات S1 و R1 المعتمدة.`;
+                return 'بصفتي صانع المنظومة، السعر الحالي للبيتكوين هو $' + currentBtcPrice.toLocaleString() + '. السوق يتحرك حالياً وسط سيولة مؤسسية متوازنة. الإشارة الحالية هي ' + (currentBtcPrice >= fixedPivot ? 'شراء (BUY)' : 'بيع تصحيحي (SELL)') + ' مع التزام تام بمستويات S1 و R1 المعتمدة.';
             }} else if (q.includes('اخبار') || q.includes('أخبار') || q.includes('تغريدات') || q.includes('كوارث') || q.includes('بيان')) {{
-                return `📰 رادار الأخبار العالمية يرصد: 1) استقرار التضخم والتصريحات الفيدرالية. 2) غياب الصدمات التنظيمية. 3) رصد تمركز حيتان السوق عند مناطق السيولة (Institutional Sweep).`;
+                return '📰 رادار الأخبار العالمية يرصد: 1) استقرار التضخم والتصريحات الفيدرالية. 2) غياب الصدمات التنظيمية. 3) رصد تمركز حيتان السوق عند مناطق السيولة (Institutional Sweep).';
             }} else if (q.includes('باك تيست') || q.includes('backtest') || q.includes('أداء') || q.includes('نجاح')) {{
-                return `📊 كصانع هذا النظام، الباك تيست يثبت أن دقة التوقعات (Win Rate) تتراوح بين 68.9% إلى 72.5% بمتوسط عائد للمخاطرة R:R يتخطى 1:2.3.`;
+                return '📊 كصانع هذا النظام، الباك تيست يثبت أن دقة التوقعات (Win Rate) تتراوح بين 68.9% إلى 72.5% بمتوسط عائد للمخاطرة R:R يتخطى 1:2.3.';
             }} else if (q.includes('صفقة') || q.includes('دخول') || q.includes('هدف') || q.includes('استوب')) {{
-                return `🎯 خطة تداولك الحية: الدخول عند $${{fixedEntry.toLocaleString()}}، الوقف عند $${{fixedStop.toLocaleString()}}، والهدف عند $${{fixedTarget.toLocaleString()}}.`;
+                return '🎯 خطة تداولك الحية: الدخول عند $' + fixedEntry.toLocaleString() + '، الوقف عند $' + fixedStop.toLocaleString() + '، والهدف عند $' + fixedTarget.toLocaleString() + '.';
             }} else {{
-                return `أهلاً بك يا مهندس. أنا الشات الذكي وصانع هذه المنظومة. اسألني في أي وقت عن حالة السوق، الأخبار، أو تفاصيل الباك تيست!`;
+                return 'أهلاً بك يا مهندس. أنا الشات الذكي وصانع هذه المنظومة. اسألني في أي وقت عن حالة السوق، الأخبار، أو تفاصيل الباك تيست!';
             }}
         }}
 
@@ -165,7 +172,7 @@ def build_html():
 <body>
 <div class="container">
     <h1>🤖 منصة تحليل واختراق خوارزميات السوق والتحكم الحي <span class="live-dot"></span></h1>
-    <p style="text-align:center;color:#8b949e">{datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} · Ultimate Mastermind & AI Suite</p>
+    <p style="text-align:center;color:#8b949e">{now_str} · Ultimate Mastermind & AI Suite</p>
 
     <div class="card action-box">
         <div class="action-label" id="action-direction">جارِ التحليل...</div>
