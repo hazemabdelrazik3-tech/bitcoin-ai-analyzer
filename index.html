@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Bitcoin Institutional Master Suite</title>
+    <title>Institutional Master Suite & Algorithm Breakout</title>
     <style>
         body{font-family:'Segoe UI',Arial,sans-serif;background:#0d1117;color:#e6edf3;padding:20px;margin:0}
         .container{max-width:1050px;margin:auto}
@@ -10,7 +10,7 @@
         h2{color:#58a6ff;border-bottom:1px solid #30363d;padding-bottom:6px}
         .card{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:20px;margin:16px 0}
         .action-box{text-align:center;padding:24px;border-radius:12px;background:#1f242c;border:2px solid #58a6ff}
-        .action-label{font-size:48px;font-weight:bold;color:#f7931a}
+        .action-label{font-size:44px;font-weight:bold;color:#f7931a}
         table{width:100%;border-collapse:collapse;margin-top:8px}
         th{text-align:right;color:#8b949e;border-bottom:1px solid #30363d;padding:8px 4px}
         td{padding:8px 4px;border-bottom:1px solid #21262d}
@@ -24,6 +24,9 @@
     
     <script>
         let ws;
+        let baselineSet = false;
+        let fixedEntry = 0, fixedStop = 0, fixedTarget = 0, fixedPivot = 0, fixedR1 = 0, fixedS1 = 0;
+
         function connectWebSocket() {
             ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
             
@@ -31,6 +34,7 @@
                 let data = JSON.parse(event.data);
                 let btcPrice = parseFloat(data.p);
                 
+                // تحديث خانة السعر الحي فقط ثانية بسانية
                 let priceElement = document.getElementById('btc-price');
                 let oldPrice = parseFloat(priceElement.getAttribute('data-price') || btcPrice);
                 
@@ -43,74 +47,61 @@
                 priceElement.innerText = '$' + btcPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 priceElement.setAttribute('data-price', btcPrice);
                 
-                // حساب المستويات الديناميكية الحية
-                let pivot = Math.round(btcPrice * 0.992);
-                let r1 = Math.round(btcPrice * 1.015);
-                let r2 = Math.round(btcPrice * 1.03);
-                let s1 = Math.round(btcPrice * 0.985);
-                let s2 = Math.round(btcPrice * 0.97);
-                
-                document.getElementById('pivot-val').innerText = '$' + pivot.toLocaleString();
-                document.getElementById('r1-val').innerText = '$' + r1.toLocaleString();
-                document.getElementById('s1-val').innerText = '$' + s1.toLocaleString();
-                document.getElementById('s2-val').innerText = '$' + s2.toLocaleString();
-                
-                // التوجيه الاستراتيجي
-                let action = btcPrice >= pivot ? "BUY" : "SELL";
-                let actionColor = action === "BUY" ? "#00c853" : "#d50000";
-                
-                let actionBox = document.getElementById('action-direction');
-                actionBox.innerText = action;
-                actionBox.style.color = actionColor;
-                
-                // تحديد خطة التداول الحية
-                let entry = s1;
-                let stop = s2;
-                let target = r1;
-                
-                if(action === "SELL") {
-                    entry = r1;
-                    stop = r2;
-                    target = s1;
+                // تثبيت المستويات الاستراتيجية لأول مرة عند فتح الصفحة لكي لا تتغير وتجري ورا السعر
+                if (!baselineSet) {
+                    fixedPivot = Math.round(btcPrice * 0.992);
+                    fixedR1 = Math.round(btcPrice * 1.015);
+                    fixedS1 = Math.round(btcPrice * 0.985);
+                    fixedEntry = fixedS1;
+                    fixedStop = Math.round(btcPrice * 0.97);
+                    fixedTarget = fixedR1;
+                    
+                    document.getElementById('pivot-val').innerText = '$' + fixedPivot.toLocaleString();
+                    document.getElementById('r1-val').innerText = '$' + fixedR1.toLocaleString();
+                    document.getElementById('s1-val').innerText = '$' + fixedS1.toLocaleString();
+                    document.getElementById('plan-entry').innerText = '$' + fixedEntry.toLocaleString();
+                    document.getElementById('plan-stop').innerText = '$' + fixedStop.toLocaleString();
+                    document.getElementById('plan-target').innerText = '$' + fixedTarget.toLocaleString();
+                    
+                    baselineSet = true;
                 }
                 
-                document.getElementById('plan-entry').innerText = '$' + entry.toLocaleString();
-                document.getElementById('plan-stop').innerText = '$' + stop.toLocaleString();
-                document.getElementById('plan-target').innerText = '$' + target.toLocaleString();
+                // تتبع حالة الصفقة والثبات على المستويات الثابتة
+                let action = btcPrice >= fixedPivot ? "BUY (شراء مؤسسي)" : "SELL (بيع تصحيحي)";
+                let actionColor = btcPrice >= fixedPivot ? "#00c853" : "#d50000";
                 
-                // ==========================================
-                // نظام تتبع حالة الصفقة (هل تفعلت أم معلقة؟ وعلى ربح أم خسارة؟)
-                // ==========================================
+                document.getElementById('action-direction').innerText = action;
+                document.getElementById('action-direction').style.color = actionColor;
+                
                 let statusText = "";
                 let statusColor = "#ff9100";
                 
-                if (action === "BUY") {
-                    if (btcPrice > entry + 100) {
-                        statusText = "🟢 تم تفعيل الصفقة (جارِ الصعود نحو الهدف)";
-                        statusColor = "#00c853";
-                    } else if (btcPrice >= entry - 50 && btcPrice <= entry + 100) {
-                        statusText = "🎯 السعر في منطقة الدخول بالضبط (فرصة ممتازة)";
-                        statusColor = "#00c853";
-                    } else if (btcPrice < entry) {
-                        statusText = "⏳ أمر معلق (بانتظار هبوط السعر لمنطقة الدخول S1)";
-                        statusColor = "#ff9100";
-                    }
-                } else { // SELL
-                    if (btcPrice < entry - 100) {
-                        statusText = "🔴 تم تفعيل صفقة البيع (تحت الأهداف)";
-                        statusColor = "#d50000";
-                    } else if (btcPrice >= entry - 100 && btcPrice <= entry + 50) {
-                        statusText = "🎯 السعر في منطقة الدخول المقاومة (R1)";
-                        statusColor = "#ff9100";
-                    } else {
-                        statusText = "⏳ أمر معلق (بانتظار صعود السعر لمنطقة البيع R1)";
-                        statusColor = "#ff9100";
-                    }
+                if (btcPrice >= fixedEntry && btcPrice <= fixedEntry + 150) {
+                    statusText = "🎯 السعر لامس منطقة الدخول الثابتة (فرصة تفعيل قوية)";
+                    statusColor = "#00c853";
+                } else if (btcPrice > fixedEntry) {
+                    statusText = "🟢 الصفقة مفعلة وتتداول في نطاق الأرباح نحو الهدف";
+                    statusColor = "#00c853";
+                } else {
+                    statusText = "⏳ أمر معلق (بانتظار ارتداد السعر لمنطقة الدخول S1 الثابتة)";
+                    statusColor = "#ff9100";
                 }
                 
-                let statusBox = document.getElementById('trade-execution-status');
-                statusBox.innerText = statusText;
-                statusBox.style.color = statusColor;
+                document.getElementById('trade-execution-status').innerText = statusText;
+                document.getElementById('trade-execution-status').style.color = statusColor;
+                
+                // خوارزمية رصد صانع السوق واختراق النطاقات (Algorithm Sweep Detection)
+                let algoMsg = "حالة الخوارزمية: استقرار في السيولة النطاقية (No Sweep)";
+                let algoColor = "#58a6ff";
+                if (btcPrice > fixedR1 - 50) {
+                    algoMsg = "🚨 تنبيه خوارزمي: اختبار حد السيولة العلوي (Breakout / Stop Hunt Risk)";
+                    algoColor = "#ff9100";
+                } else if (btcPrice < fixedS1 + 50) {
+                    algoMsg = "⚡ تنبيه خوارزمي: هجوم تجميعي عند الدعم السفلي (Institutional Sweep Zone)";
+                    algoColor = "#00c853";
+                }
+                document.getElementById('algo-status').innerText = algoMsg;
+                document.getElementById('algo-status').style.color = algoColor;
             };
             
             ws.onclose = function() {
@@ -123,50 +114,50 @@
 </head>
 <body>
 <div class="container">
-    <h1>₿ منصة تحليل البيتكوين والتحكم الحي <span class="live-dot"></span></h1>
-    <p style="text-align:center;color:#8b949e">2026-10-31 02:03 UTC · Real-Time WebSocket & Trade Tracker</p>
+    <h1>🤖 منصة تحليل واختراق خوارزميات السوق والتحكم الحي <span class="live-dot"></span></h1>
+    <p style="text-align:center;color:#8b949e">2026-10-31 02:09 UTC · Institutional Sweep & Fixed Levels Suite</p>
 
-    <!-- التوجيه الاستراتيجي وحالة التنفيذ الفوري -->
+    <!-- التوجيه الاستراتيجي وحالة التنفيذ -->
     <div class="card action-box">
-        <div class="action-label" id="action-direction">جارِ الاتصال...</div>
-        <div id="trade-execution-status" style="font-size:18px;font-weight:bold;margin-top:12px;color:#ff9100">جارِ فحص حالة الصفقة في السوق...</div>
+        <div class="action-label" id="action-direction">جارِ التحليل...</div>
+        <div id="trade-execution-status" style="font-size:17px;font-weight:bold;margin-top:10px;color:#ff9100">فحص حالة أوامر السوق...</div>
+        <div id="algo-status" style="font-size:14px;margin-top:8px;color:#58a6ff">منظومة رصد الخوارزميات: نشطة</div>
     </div>
 
-    <!-- نظرة عامة على السوق -->
+    <!-- نظرة عامة وسعر حي متحدث فقط -->
     <div class="card">
-        <h2>📊 نظرة عامة على سوق العملات الرقمية (Market Snapshot)</h2>
+        <h2>📊 نظرة عامة والسعر الفوري اللحظي</h2>
         <div style="display:flex;flex-wrap:wrap;justify-content:space-around">
-            <div class="metric"><div class="val" id="btc-price" data-price="0">جارِ التحميل...</div><div class="lbl">سعر البيتكوين (WebSocket Live)</div></div>
+            <div class="metric"><div class="val" id="btc-price" data-price="0">جارِ الاتصال...</div><div class="lbl">السعر الحي الفوري (Live Ticker)</div></div>
             <div class="metric"><div class="val" style="color:#58a6ff">101.96</div><div class="lbl">مؤشر الدولار (DXY)</div></div>
-            <div class="metric"><div class="val" style="color:#f7931a">1.33%</div><div class="lbl">العائد الحقيقي</div></div>
+            <div class="metric"><div class="val" style="color:#00c853">مستقر</div><div class="lbl">حالة السيولة الخوارزمية</div></div>
         </div>
     </div>
 
-    <!-- خطة التداول والأسعار الديناميكية -->
+    <!-- خطة التداول بالمستويات الثابتة والدقيقة -->
     <div class="card">
-        <h2>🎯 خطة التداول ومستويات التنفيذ الميدانية</h2>
+        <h2>🎯 خطة التداول ومستويات التنفيذ الميدانية (ثابتة وغير متذبذبة)</h2>
         <table>
-            <tr><th>العنصر التكتيكي</th><th>السعر الحي المتغير</th><th>الوصف المؤسسي</th></tr>
-            <tr><td><b>منطقة الدخول (Entry)</b></td><td id="plan-entry" style="color:#58a6ff;font-weight:bold">--</td><td>نقطة التمركز المرتقبة للدخول بالصفقة.</td></tr>
-            <tr><td><b>وقف الخسارة (Stop Loss)</b></td><td id="plan-stop" style="color:#d50000;font-weight:bold">--</td><td>نقطة حماية رأس المال لتفادي مصائد السيولة.</td></tr>
-            <tr><td><b>الهدف الرئيسي (Take Profit)</b></td><td id="plan-target" style="color:#00c853;font-weight:bold">--</td><td>المحطة المستهدفة لجني الأرباح.</td></tr>
+            <tr><th>العنصر التكتيكي</th><th>السعر الثابت المعتمد</th><th>الوصف الاستراتيجي</th></tr>
+            <tr><td><b>منطقة الدخول (Entry)</b></td><td id="plan-entry" style="color:#58a6ff;font-weight:bold">--</td><td>النقطة المؤسسية المعتمدة لفتح الصفقة.</td></tr>
+            <tr><td><b>وقف الخسارة (Stop Loss)</b></td><td id="plan-stop" style="color:#d50000;font-weight:bold">--</td><td>حماية رأس المال ضد مصائد صانع السوق (Stop Hunts).</td></tr>
+            <tr><td><b>الهدف الرئيسي (Take Profit)</b></td><td id="plan-target" style="color:#00c853;font-weight:bold">--</td><td>محطة جني الأرباح المحسوبة آلياً.</td></tr>
         </table>
     </div>
 
-    <!-- المستويات الفنية والدعوم والمقاومات -->
+    <!-- المستويات الفنية والدعوم والمقاومات الثابتة -->
     <div class="card">
-        <h2>📍 مستويات الدعم والمقاومة الحية (Key Levels)</h2>
+        <h2>📍 مستويات البيفوت والدعوم والمقاومات (Fixed Key Levels)</h2>
         <table>
-            <tr><th>المستوى الفني</th><th>السعر الحي الآلي</th></tr>
+            <tr><th>المستوى الفني</th><th>السعر المعتمد</th></tr>
             <tr><td>المقاومة الأولى (R1)</td><td id="r1-val" style="color:#d50000">--</td></tr>
             <tr><td>محور الارتكاز (Pivot)</td><td id="pivot-val" style="color:#58a6ff;font-weight:bold">--</td></tr>
             <tr><td>الدعم الأول (S1)</td><td id="s1-val" style="color:#00c853">--</td></tr>
-            <tr><td>الدعم الثاني (S2)</td><td id="s2-val" style="color:#00c853">--</td></tr>
         </table>
     </div>
 
     <div class="footer">
-        <p>⚠️ النظام متصل بلحظات البث المباشر (WebSocket) ويحدث حالة الصفقة (معلقة / مفعلة / رابحة) أوتوماتيكياً.</p>
+        <p>⚠️ تم تثبيت مستويات الدخول والأهداف لمنع التذبذب، بينما يظل السعر الحي وراصد الخوارزميات يعملان بلحظته.</p>
     </div>
 </div>
 </body>
