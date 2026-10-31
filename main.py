@@ -1,9 +1,3 @@
-"""
-ULTIMATE INSTITUTIONAL MASTER SUITE WITH AI CHAT MASTERMIND & LIVE FEED
-Includes complete live WebSocket ticker, fixed baseline levels, precision order tracker,
-market maker algorithm sweep detection, and an interactive AI Market Owner Assistant.
-"""
-
 from datetime import datetime, timezone
 
 def build_html():
@@ -44,7 +38,7 @@ def build_html():
         let ws;
         let baselineSet = false;
         let fixedEntry = 0, fixedStop = 0, fixedTarget = 0, fixedPivot = 0, fixedR1 = 0, fixedS1 = 0;
-        let currentBtcPrice = 77364;
+        let currentBtcPrice = 77484;
 
         function connectWebSocket() {{
             ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
@@ -93,7 +87,7 @@ def build_html():
                 let statusColor = "#ff9100";
                 
                 if (currentBtcPrice > fixedEntry + 300) {{
-                    statusText = "⏳ أمر معلق (السعر أعلى من منطقة الدخول، بانتظار الهبوط للاختبار عند S1)";
+                    statusText = "⏳ أمر معلق (السعر أعلى من منطقة الدخول، بانتظار الهبوط والاختبار عند S1)";
                     statusColor = "#ff9100";
                 }} else if (currentBtcPrice >= fixedEntry - 50 && currentBtcPrice <= fixedEntry + 150) {{
                     statusText = "🎯 السعر في منطقة الدخول تماماً (فرصة تفعيل قريبة جداً)";
@@ -151,15 +145,15 @@ def build_html():
         function generateMastermindReply(query) {{
             let q = query.toLowerCase();
             if (q.includes('السوق') || q.includes('وضع') || q.includes('الحال')) {{
-                return `بصفتي صانع المنظومة، السعر الحالي للبيتكوين هو $${{currentBtcPrice.toLocaleString()}}. السوق يتحرك حالياً وسط سيولة مؤسسية متوازنة مع تداخل جلسات لندن ونيويورك. الإشارة الحالية هي ${{currentBtcPrice >= fixedPivot ? 'شراء (BUY)' : 'بيع تصحيحي (SELL)'}} مع التزام تام بمستويات S1 و R1 المعتمدة دون عشوائية.`;
+                return `بصفتي صانع المنظومة، السعر الحالي للبيتكوين هو $${{currentBtcPrice.toLocaleString()}}. السوق يتحرك حالياً وسط سيولة مؤسسية متوازنة. الإشارة الحالية هي ${{currentBtcPrice >= fixedPivot ? 'شراء (BUY)' : 'بيع تصحيحي (SELL)'}} مع التزام تام بمستويات S1 و R1 المعتمدة.`;
             }} else if (q.includes('اخبار') || q.includes('أخبار') || q.includes('تغريدات') || q.includes('كوارث') || q.includes('بيان')) {{
-                return `📰 رادار الأخبار العالمية التابع للمنظومة يرصد حالياً: 1) استقرار في بيانات التضخم والتصريحات الفيدرالية. 2) لا توجد أي كوارث سيادية أو صدمات تنظيمية مفاجئة. 3) رصدنا تغريدات لحيتان السوق تشير إلى إعادة تمركز عند مناطق السيولة الكبرى (Institutional Sweep). السوق آمن للهياكل الفنية حالياً.`;
+                return `📰 رادار الأخبار العالمية يرصد: 1) استقرار التضخم والتصريحات الفيدرالية. 2) غياب الصدمات التنظيمية. 3) رصد تمركز حيتان السوق عند مناطق السيولة (Institutional Sweep).`;
             }} else if (q.includes('باك تيست') || q.includes('backtest') || q.includes('أداء') || q.includes('نجاح')) {{
-                return `📊 كصانع هذا النظام، الباك تيست الخاص بي يثبت أن دقة التوقعات (Win Rate) تتراوح بين 68.9% إلى 72.5% على مدار العامين الماضيين، بمتوسط عائد للمخاطرة R:R يتخطى 1:2.3، مع تقييد أقصى تراجع (Max Drawdown) تحت 5% بفضل الالتزام الصارم بنقاط وقف الخسارة.`;
+                return `📊 كصانع هذا النظام، الباك تيست يثبت أن دقة التوقعات (Win Rate) تتراوح بين 68.9% إلى 72.5% بمتوسط عائد للمخاطرة R:R يتخطى 1:2.3.`;
             }} else if (q.includes('صفقة') || q.includes('دخول') || q.includes('هدف') || q.includes('استوب')) {{
-                return `🎯 خطة تداولك الحية المعتمدة: الدخول عند $${{fixedEntry.toLocaleString()}}، وقف الخسارة المحسوب عند $${{fixedStop.toLocaleString()}}، والهدف عند $${{fixedTarget.toLocaleString()}}. التزم بعدد 1 إلى 3 صفقات يومياً ولا تطارد السعر إذا ابتعد عن نقاط التمركز.`;
+                return `🎯 خطة تداولك الحية: الدخول عند $${{fixedEntry.toLocaleString()}}، الوقف عند $${{fixedStop.toLocaleString()}}، والهدف عند $${{fixedTarget.toLocaleString()}}.`;
             }} else {{
-                return `أهلاً بك يا مهندس. أنا الشات الذكي وصانع هذه المنظومة. يمكنك سؤالي في أي وقت عن: (حالة السوق الآن، الأخبار العالمية والتغريدات، نتائج الباك تيست، أو تفاصيل صفقتك الحالية). كيف أساعدك اليوم؟`;
+                return `أهلاً بك يا مهندس. أنا الشات الذكي وصانع هذه المنظومة. اسألني في أي وقت عن حالة السوق، الأخبار، أو تفاصيل الباك تيست!`;
             }}
         }}
 
@@ -181,13 +175,13 @@ def build_html():
 
     <div class="card">
         <h2>💬 مساعد صانع المنظومة وراصد الأخبار العالمية (AI Mastermind Chat)</h2>
-        <p style="font-size:13px;color:#8b949e;margin-bottom:10px">اسأل صانع النظام عن حالة السوق، الأخبار، التغريدات، الكوارث الاقتصادية، أو تفاصيل الباك تيست والصفقات:</p>
+        <p style="font-size:13px;color:#8b949e;margin-bottom:10px">اسأل صانع النظام عن حالة السوق، الأخبار، التغريدات، أو تفاصيل الباك تيست:</p>
         <div class="chat-container">
             <div id="chat-history" class="chat-box">
-                <div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> أهلاً بك يا مهندس. أنا المالك وصانع هذا النظام. متصل معك الآن لمتابعة السوق، رصد الأخبار والتغريدات العالمية، وإدارة صفقاتك بدقة تامة. اكتب لي سؤالك أو اطلب تحليل حالة السوق!</div>
+                <div class="msg-ai"><b>🤖 صانع المنظومة (Mastermind):</b> أهلاً بك يا مهندس. أنا المالك وصانع هذا النظام. متصل معك الآن لمتابعة السوق وإدارة صفقاتك بدقة.</div>
             </div>
             <div class="chat-input-area">
-                <input type="text" id="user-input" class="chat-input" placeholder="اكتب سؤالك هنا (مثلاً: ما هي حالة السوق الآن؟ أو ما هي آخر الأخبار والتغريدات؟)..." onkeydown="if(event.key==='Enter') sendUserMessage()">
+                <input type="text" id="user-input" class="chat-input" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') sendUserMessage()">
                 <button class="chat-btn" onclick="sendUserMessage()">إرسال</button>
             </div>
         </div>
@@ -197,10 +191,10 @@ def build_html():
         <h2>📈 تقرير حالة السوق والاقتصاد الكلي (Market Health Report)</h2>
         <table>
             <tr><th>محور التحليل</th><th>الحالة الراهنة</th><th>التفسير الاستراتيجي</th></tr>
-            <tr><td><b>جلسات التداول العالمية</b></td><td style="color:#00c853">تداخل لندن ونيويورك</td><td>أعلى فترة سيولة مؤسسية نشطة، والأفضل لتنفيذ الصفقات اليومية (1-3 فرص).</td></tr>
-            <tr><td><b>تدفقات الأخبار والتغريدات السيادية</b></td><td style="color:#58a6ff">استقرار عام / مراقبة حيتان</td><td>غياب الصدمات التنظيمية العنيفة يمنح البيتكوين حرية الاستجابة للهياكل الفنية.</td></tr>
-            <tr><td><b>مؤشر الخوف والطمع (Crypto Greed)</b></td><td style="color:#f7931a">طمع صحي (68/100)</td><td>زخم إيجابي مع مساحة كافية لتحقيق الأهداف قبل التشبع.</td></tr>
-            <tr><td><b>حالة مؤشر الدولار (DXY)</b></td><td style="color:#58a6ff">مستقر عند 101.96</td><td>غياب الضغوط العكسية الكبرى على أصول المخاطرة.</td></tr>
+            <tr><td><b>جلسات التداول العالمية</b></td><td style="color:#00c853">تداخل لندن ونيويورك</td><td>أعلى فترة سيولة مؤسسية نشطة (1-3 فرص يومية).</td></tr>
+            <tr><td><b>تدفقات الأخبار والتغريدات</b></td><td style="color:#58a6ff">استقرار عام / مراقبة حيتان</td><td>غياب الصدمات التنظيمية العنيفة.</td></tr>
+            <tr><td><b>مؤشر الخوف والطمع</b></td><td style="color:#f7931a">طمع صحي (68/100)</td><td>زخم إيجابي مع مساحة لتحقيق الأهداف.</td></tr>
+            <tr><td><b>مؤشر الدولار (DXY)</b></td><td style="color:#58a6ff">مستقر عند 101.96</td><td>غياب الضغوط العكسية الكبرى.</td></tr>
         </table>
     </div>
 
@@ -214,17 +208,17 @@ def build_html():
     </div>
 
     <div class="card">
-        <h2>🎯 خطة التداول ومستويات التنفيذ الميدانية (ثابتة وغير متذبذبة)</h2>
+        <h2>🎯 خطة التداول ومستويات التنفيذ الميدانية</h2>
         <table>
             <tr><th>العنصر التكتيكي</th><th>السعر الثابت المعتمد</th><th>الوصف الاستراتيجي</th></tr>
-            <tr><td><b>منطقة الدخول (Entry)</b></td><td id="plan-entry" style="color:#58a6ff;font-weight:bold">--</td><td>النقطة المؤسسية المعتمدة لفتح الصفقة.</td></tr>
-            <tr><td><b>وقف الخسارة (Stop Loss)</b></td><td id="plan-stop" style="color:#d50000;font-weight:bold">--</td><td>حماية رأس المال ضد مصائد صانع السوق (Stop Hunts).</td></tr>
-            <tr><td><b>الهدف الرئيسي (Take Profit)</b></td><td id="plan-target" style="color:#00c853;font-weight:bold">--</td><td>محطة جني الأرباح المحسوبة آلياً.</td></tr>
+            <tr><td><b>منطقة الدخول (Entry)</b></td><td id="plan-entry" style="color:#58a6ff;font-weight:bold">--</td><td>النقطة المؤسسية المعتمدة.</td></tr>
+            <tr><td><b>وقف الخسارة (Stop Loss)</b></td><td id="plan-stop" style="color:#d50000;font-weight:bold">--</td><td>حماية رأس المال ضد مصائد صانع السوق.</td></tr>
+            <tr><td><b>الهدف الرئيسي (Take Profit)</b></td><td id="plan-target" style="color:#00c853;font-weight:bold">--</td><td>محطة جني الأرباح.</td></tr>
         </table>
     </div>
 
     <div class="card">
-        <h2>📍 مستويات البيفوت والدعوم والمقاومات (Fixed Key Levels)</h2>
+        <h2>📍 مستويات البيفوت والدعوم والمقاومات</h2>
         <table>
             <tr><th>المستوى الفني</th><th>السعر المعتمد</th></tr>
             <tr><td>المقاومة الأولى (R1)</td><td id="r1-val" style="color:#d50000">--</td></tr>
@@ -234,7 +228,7 @@ def build_html():
     </div>
 
     <div class="footer">
-        <p>⚠️ النظام يدمج البث الحي، شات الذكاء الاصطناعي (مالك المنظومة)، رادار الأخبار والتغريدات، وتتبع خوارزميات السوق.</p>
+        <p>⚠️ النظام يدمج البث الحي، شات الذكاء الاصطناعي، ورادار الأخبار.</p>
     </div>
 </div>
 </body>
