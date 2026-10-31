@@ -8,7 +8,8 @@ from datetime import datetime, timezone
 
 def build_html():
     now_str = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
-    return f"""<!DOCTYPE html>
+    
+    html_content = f"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -241,8 +242,9 @@ def build_html():
 </body>
 </html>
 """
+    return html_content
 
-with open("index.html", "w", encoding="utf-8") as f:
-    f.write(build_html())
-
-print("Successfully generated Ultimate Master Suite with AI Mastermind Chat.")
+if __name__ == '__main__':
+    with open("index.html", "w", encoding="utf-8") as f:
+        f.write(build_html())
+    print("Successfully generated Ultimate Master Suite with AI Mastermind Chat.")
